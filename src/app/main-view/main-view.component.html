@@ -1,0 +1,173 @@
+<nav style="background-color: black;">
+  <button class="logout" style="float:right;" mat-raised-button (click)="logout()">logout</button>
+</nav>
+
+<div *ngIf="isAdmin;else client">
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Books List">
+      <mat-card class="book-card" *ngFor="let book of books">
+        <mat-card-header>
+          <mat-card-title>{{book.title}}</mat-card-title>
+          <mat-card-subtitle>{{book.isbn}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <br>
+          Cover: {{book.cover}}
+          <br>
+          Publisher: {{book.publisher}}
+          <br>
+          Pages: {{book.pages}}
+          <br>
+          Available: {{book.available}}
+          <br>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="delBook(book)">Delete</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Add Books">
+      <form [formGroup] = "bookForm" (ngSubmit)="addBooks()">
+        <br>
+          <div class="form-group">
+              <label>ISBN: </label>
+              <br>
+              <input type="text" class="form-control" formControlName="isbn">
+              <div *ngIf="bookForm.get('isbn')?.errors?.['required']" class="alert alert-danger">
+                  ISBN is required
+              </div>
+          </div>
+          <br>
+          <div class="form-group">
+              <label>title: </label>
+              <br>
+              <input type="text" class="form-control"  formControlName = "title" >
+              <div *ngIf="bookForm.get('title')?.errors?.['required']" class="alert alert-danger">
+                title is required
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label>cover: </label>
+            <br>
+            <input type="text" class="form-control"  formControlName = "cover">
+            <div *ngIf="bookForm.get('cover')?.errors?.['required']" class="alert alert-danger">
+              cover is required
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label>publisher: </label>
+          <br>
+          <input type="text" class="form-control"  formControlName = "publisher">
+          <div *ngIf="bookForm.get('publisher')?.errors?.['required']" class="alert alert-danger">
+            publisher is required
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <label>pages: </label>
+        <br>
+        <input type="number" class="form-control"  formControlName = "pages">
+        <div *ngIf="bookForm.get('pages')?.errors?.['required']" class="alert alert-danger">
+          pages is required
+      </div>
+      </div>
+      <div class="form-group">
+        <label>available: </label>
+        <br>
+        <input type="number" class="form-control"  formControlName = "available">
+        <div *ngIf="bookForm.get('available')?.errors?.['required']" class="alert alert-danger">
+          Number of books available is required
+      </div>
+      </div>
+          <button mat-raised-button type="submit" [disabled] = "!bookForm.valid">Submit</button>
+    </form>
+    </mat-tab>
+
+    <mat-tab label="Orders">
+
+      <mat-card class="order-card" *ngFor="let order of ordersAll">
+        <mat-card-header>
+          <mat-card-title>{{order.booking_id}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <br>
+          Booking date: {{order.booking_date}}
+          <br>
+          Return date: {{order.return_date}}
+          <br>
+          <div *ngIf="!order.isOverdue">
+            This order is Overdue, fines to be collected
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+  <ng-template #client>
+    <div style="float:left;">
+      Fine: {{user.fine}}
+    </div>
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Books List">
+          <mat-card class="book-card" *ngFor="let book of books">
+            <mat-card-header>
+              <mat-card-title>{{book.title}}</mat-card-title>
+              <mat-card-subtitle>{{book.isbn}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <br>
+              Cover: {{book.cover}}
+              <br>
+              Publisher: {{book.publisher}}
+              <br>
+              Pages: {{book.pages}}
+              <br>
+              Available: {{book.available}}
+              <br>
+              <!-- Rating: {{book.rating}} -->
+              <br>
+              <!-- <bar-rating [(rate)]="rating1" [max]="5"></bar-rating> -->
+              <form [formGroup] = "rating1">
+              <div class="form-group">
+                <label>Rate: </label>
+                <br>
+                <input type="number" class="form-control"  formControlName = "rating_number" appearance="outline">
+            </div>
+          </form>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button (click)="addOrder(book)">Order</button>
+              <button mat-raised-button (click)="addRating(book.isbn,userid)">Rate</button>
+            </mat-card-actions>
+          </mat-card>
+      </mat-tab>
+      <mat-tab label="Orders">
+
+        <mat-card class="order-card" *ngFor="let order of orders">
+          <mat-card-header>
+            <mat-card-title>{{order.booking_id}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <br>
+            Booking date: {{order.booking_date}}
+            <br>
+            Return date: {{order.return_date}}
+            <br>
+            <div *ngIf="!order.isOverdue">
+            This order is Overdue
+            </div>
+            <br>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button (click)="delOrder(order.booking_id)">Return</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-template>
+
+
+

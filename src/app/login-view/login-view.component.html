@@ -1,0 +1,89 @@
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Login">
+    <form [formGroup] = "loginForm" (ngSubmit)="onLogin()">
+      <br>
+        <div class="form-group">
+            <label>Username: </label>
+            <input type="text" class="form-control" formControlName="username">
+            <div *ngIf="loginForm.get('username')?.errors?.['required']" class="alert alert-danger">
+                username is required
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Password: </label>
+            <input type="password" class="form-control"  formControlName = "password">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']" class="alert alert-danger">
+              password is required
+          </div>
+        </div>
+        <button mat-raised-button type="submit" [disabled] = "!loginForm.valid">Submit</button>
+    </form>
+  </mat-tab>
+
+
+  <mat-tab label="Register">
+    <form [formGroup] = "registerForm" (ngSubmit)="onRegister()">
+    <br>
+      <div class="form-group">
+          <label>Username: </label>
+          <br>
+          <input type="text" class="form-control" formControlName="username">
+          <div *ngIf="registerForm.get('username')?.errors?.['required']" class="alert alert-danger">
+              username is required
+          </div>
+      </div>
+      <br>
+      <div class="form-group">
+          <label>Password: </label>
+          <br>
+          <input type="password" class="form-control"  formControlName = "password" appearance="outline">
+          <div *ngIf="registerForm.get('password')?.errors?.['required']" class="alert alert-danger">
+            password is required
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <label>name: </label>
+        <br>
+        <input type="text" class="form-control"  formControlName = "name">
+        <div *ngIf="registerForm.get('name')?.errors?.['required']" class="alert alert-danger">
+          name is required
+      </div>
+    </div>
+    <br>
+    <div class="form-group">
+      <label>DOB: </label>
+      <br>
+      <input type="date" class="form-control"  formControlName = "dob">
+      <div *ngIf="registerForm.get('dob')?.errors?.['required']" class="alert alert-danger">
+        dob is required
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <label>address: </label>
+    <br>
+    <input type="text" class="form-control"  formControlName = "address">
+    <div *ngIf="registerForm.get('address')?.errors?.['required']" class="alert alert-danger">
+      address is required
+  </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <label>role: </label>
+    <br>
+    <select id="role" name="role" formControlName="role">
+      <option value="ADMIN">Admin</option>
+      <option value="CLIENT">Normal membership</option>
+      <option value="PRIVILEGED_CLIENT">Gold membership</option>
+    </select>
+
+  </div>
+      <button mat-raised-button type="submit" [disabled] = "!registerForm.valid">Submit</button>
+  </form>
+</mat-tab>
+
+</mat-tab-group>
+
+
